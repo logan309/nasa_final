@@ -1,5 +1,7 @@
 import { Hero } from '@/components/home/Hero';
 import { ActionCards } from '@/components/home/ActionCards';
+import { ExoplanetTypes } from '@/components/home/ExoplanetTypes';
+import { FamousExoplanets } from '@/components/home/FamousExoplanets';
 
 const Home = () => {
   return (
@@ -77,6 +79,12 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Types of Exoplanets */}
+      <ExoplanetTypes />
+
+      {/* Famous Exoplanets */}
+      <FamousExoplanets />
     </div>
   );
 };
