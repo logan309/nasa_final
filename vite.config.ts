@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  // CRITICAL: Sets the base URL for GitHub Pages deployment using your repository name
+  // CRITICAL: This sets the base URL for GitHub Pages deployment to the repository name
   base: '/nasa_final/', 
   server: {
     host: "::",
