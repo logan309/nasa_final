@@ -73,7 +73,7 @@ export const Hero = () => {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <motion.a
-            href="#what-are-exoplanets"
+            href="ExoplanetTypes.tsx"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 rounded-xl font-semibold text-lg relative overflow-hidden group"
