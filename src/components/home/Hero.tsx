@@ -72,25 +72,7 @@ export const Hero = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
-          <motion.a
-            href="ExoplanetTypes.tsx"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 rounded-xl font-semibold text-lg relative overflow-hidden group"
-            style={{
-              background: 'linear-gradient(135deg, hsl(258, 90%, 66%), hsl(200, 98%, 39%))',
-              color: 'hsl(var(--foreground))',
-              boxShadow: '0 0 30px hsl(258 90% 66% / 0.4)',
-            }}
-          >
-            <span className="relative z-10">Explore Now</span>
-            <motion.div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-              style={{
-                background: 'linear-gradient(135deg, hsl(258, 90%, 76%), hsl(200, 98%, 49%))',
-              }}
-            />
-          </motion.a>
+          
 
           <motion.a
             href="https://exoplanets.nasa.gov/"
