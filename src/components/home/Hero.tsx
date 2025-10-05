@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 export const Hero = () => {
   const [typedText, setTypedText] = useState('');
-  const fullText = 'A WORLD BEHOND ';
+  const fullText = 'A WORLD AWAY';
 
   useEffect(() => {
     let currentIndex = 0;
@@ -73,7 +73,7 @@ export const Hero = () => {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <motion.a
-            href="#action-cards"
+            href="#what-are-exoplanets"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 rounded-xl font-semibold text-lg relative overflow-hidden group"
@@ -93,7 +93,9 @@ export const Hero = () => {
           </motion.a>
 
           <motion.a
-            href="#what-are-exoplanets"
+            href="https://exoplanets.nasa.gov/"
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 rounded-xl font-semibold text-lg border transition-all"
