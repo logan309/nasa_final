@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Upload, Sparkles, HelpCircle, AlertCircle, CheckCircle2, ChevronDown } from 'lucide-react';
+import { Upload, Sparkles, HelpCircle, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { toast } from "@/components/ui/sonner";
 import {
   Accordion,
@@ -8,6 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Link } from 'react-router-dom';
 
 const Discover = () => {
   const [isDragging, setIsDragging] = useState(false);
@@ -42,10 +43,13 @@ const Discover = () => {
 
     const formData = new FormData();
     formData.append('file', file);
+    
+    // The conditional URL is no longer necessary as you will be deploying this final version
+    // to GitHub Pages, which will use the live backend URL.
+    const API_URL = 'https://nasa-final-api.onrender.com/';
 
-    // NOTE: This URL assumes your Python Flask server is running locally on port 5000
     try {
-      const response = await fetch('http://localhost:5000/analyze_exoplanet', {
+      const response = await fetch(API_URL + '/analyze_exoplanet', {
         method: 'POST',
         body: formData,
       });
@@ -65,8 +69,46 @@ const Discover = () => {
     }
   };
 
+  const requiredFeatures = [
+    { name: "Orbital Period", key: "OrbitalPeriod [days]", desc: "Time for the planet candidate to orbit the star." },
+    { name: "Orbital Period Upper Unc.", key: "OrbitalPeriod Upper Unc. [days]", desc: "Upper uncertainty of the orbital period." },
+    { name: "Orbital Period Lower Unc.", key: "OrbitalPeriod Lower Unc. [days]", desc: "Lower uncertainty of the orbital period." },
+    { name: "Transit Epoch", key: "TransitEpoch [BKJD]", desc: "The time of the first detected transit." },
+    { name: "Transit Epoch Upper Unc.", key: "TransitEpoch Upper Unc. [BKJD]", desc: "Upper uncertainty of the transit epoch." },
+    { name: "Transit Epoch Lower Unc.", key: "TransitEpoch Lower Unc. [BKJD]", desc: "Lower uncertainty of the transit epoch." },
+    { name: "Impact Parameter", key: "Impact Parameter", desc: "The projected distance between the planet and star centers." },
+    { name: "Impact Parameter Upper Unc.", key: "Impact Parameter Upper Unc.", desc: "Upper uncertainty of the impact parameter." },
+    { name: "Impact Parameter Lower Unc.", key: "Impact Parameter Lower Unc.", desc: "Lower uncertainty of the impact parameter." },
+    { name: "Transit Duration", key: "Transit Duration [hrs]", desc: "The total time the transit lasts." },
+    { name: "Transit Duration Upper Unc.", key: "Transit Duration Upper Unc. [hrs]", desc: "Upper uncertainty of the transit duration." },
+    { name: "Transit Duration Lower Unc.", key: "Transit Duration Lower Unc. [hrs]", desc: "Lower uncertainty of the transit duration." },
+    { name: "Transit Depth", key: "Transit Depth [ppm]", desc: "Measured drop in starlight (parts per million)." },
+    { name: "Transit Depth Upper Unc.", key: "Transit Depth Upper Unc. [ppm]", desc: "Upper uncertainty of the transit depth." },
+    { name: "Transit Depth Lower Unc.", key: "Transit Depth Lower Unc. [ppm]", desc: "Lower uncertainty of the transit depth." },
+    { name: "Planetary Radius", key: "Planetary Radius [Earth radii]", desc: "Radius of the planet candidate relative to Earth." },
+    { name: "Planetary Radius Upper Unc.", key: "Planetary Radius Upper Unc. [Earth radii]", desc: "Upper uncertainty of the planet's radius." },
+    { name: "Planetary Radius Lower Unc.", key: "Planetary Radius Lower Unc. [Earth radii]", desc: "Lower uncertainty of the planet's radius." },
+    { name: "Equilibrium Temperature", key: "Equilibrium Temperature [K]", desc: "The planet's equilibrium temperature in Kelvin." },
+    { name: "Insolation Flux", key: "Insolation Flux [Earth flux]", desc: "The amount of stellar radiation received by the planet." },
+    { name: "Insolation Flux Upper Unc.", key: "Insolation Flux Upper Unc. [Earth flux]", desc: "Upper uncertainty of the insolation flux." },
+    { name: "Insolation Flux Lower Unc.", key: "Insolation Flux Lower Unc. [Earth flux]", desc: "Lower uncertainty of the insolation flux." },
+    { name: "Transit Signal-to-Noise", key: "Transit Signal-to-Noise", desc: "A measure of the transit signal's strength." },
+    { name: "TCE Planet Number", key: "TCE Planet Number", desc: "Planet number in the TCE." },
+    { name: "Stellar Effective Temperature", key: "Stellar Effective Temperature [K]", desc: "Effective temperature of the host star." },
+    { name: "Stellar Effective Temperature Upper Unc.", key: "Stellar Effective Temperature Upper Unc. [K]", desc: "Upper uncertainty of the star's temperature." },
+    { name: "Stellar Effective Temperature Lower Unc.", key: "Stellar Effective Temperature Lower Unc. [K]", desc: "Lower uncertainty of the star's temperature." },
+    { name: "Stellar Surface Gravity", key: "Stellar Surface Gravity [log10(cm/s**2)]", desc: "Surface gravity of the host star." },
+    { name: "Stellar Surface Gravity Upper Unc.", key: "Stellar Surface Gravity Upper Unc. [log10(cm/s**2)]", desc: "Upper uncertainty of the star's surface gravity." },
+    { name: "Stellar Surface Gravity Lower Unc.", key: "Stellar Surface Gravity Lower Unc. [log10(cm/s**2)]", desc: "Lower uncertainty of the star's surface gravity." },
+    { name: "Stellar Radius", key: "Stellar Radius [Solar radii]", desc: "Radius of the host star relative to the Sun." },
+    { name: "Stellar Radius Upper Unc.", key: "Stellar Radius Upper Unc. [Solar radii]", desc: "Upper uncertainty of the star's radius." },
+    { name: "Stellar Radius Lower Unc.", key: "Stellar Radius Lower Unc. [Solar radii]", desc: "Lower uncertainty of the star's radius." },
+    { name: "RA", key: "RA [decimal degrees]", desc: "Right ascension of the host star." },
+    { name: "Dec", key: "Dec [decimal degrees]", desc: "Declination of the host star." },
+    { name: "Kepler-band", key: "Kepler-band [mag]", desc: "The star's magnitude in the Kepler band." },
+  ];
+
   const renderResults = () => {
-    // --- Loading State ---
     if (isLoading) {
       return (
         <div className="flex flex-col items-center justify-center h-[400px] text-center">
@@ -85,7 +127,6 @@ const Discover = () => {
       );
     }
 
-    // --- Results Display ---
     if (analysisResult) {
       const positiveCount = analysisResult.prediction.filter(p => p === 1).length;
       return (
@@ -98,7 +139,7 @@ const Discover = () => {
             <CheckCircle2 className="w-6 h-6 text-primary" />
           </div>
           <h3 className="text-xl font-bold mb-4 text-foreground">Detailed Results</h3>
-          <div className="space-y-2">
+          <div className="space-y-2 overflow-y-auto max-h-[300px]">
             {analysisResult.prediction.map((p, index) => (
               <div key={index} className="p-4 rounded-lg flex items-center justify-between transition-all" style={{
                 background: p === 1 ? 'hsl(var(--secondary) / 0.1)' : 'hsl(var(--muted) / 0.1)',
@@ -120,7 +161,6 @@ const Discover = () => {
       );
     }
 
-    // --- Default Info Display ---
     return (
       <div className="h-full">
         <h3 className="text-xl font-bold mb-4 text-foreground flex items-center gap-2">
@@ -128,20 +168,38 @@ const Discover = () => {
           AI Model Information
         </h3>
         <p className="text-muted-foreground mb-4 leading-relaxed">
-          This AI service is trained on data from NASA's Kepler & TESS missions, specifically the Kepler Objects of Interest (KOI) and TESS Objects of Interest (TOI) datasets.
+          This AI service is trained on data from NASA's Kepler & TESS missions, specifically the **Kepler Objects of Interest (KOI)** and **TESS Objects of Interest (TOI)** datasets.
         </p>
         <p className="text-sm text-primary font-semibold mb-6">
-          The model employed is XGBoost, chosen for its high accuracy in distinguishing true transits from false positives.
+          The model employed is **XGBoost**, chosen for its high accuracy in distinguishing true transits from false positives.
         </p>
-        
-        <div className="p-4 rounded-xl bg-muted/10 border border-muted/30">
-            <h4 className="font-semibold text-foreground flex items-center gap-2 mb-2">
-                <AlertCircle className="w-4 h-4 text-accent" />
-                Next Steps
-            </h4>
-            <p className="text-sm text-muted-foreground">
-                Please upload your own CSV file to begin classification. 
-            </p>
+        <div className="space-y-4">
+          <div className="p-4 rounded-xl bg-muted/10 border border-muted/30">
+              <h4 className="font-semibold text-foreground flex items-center gap-2 mb-2">
+                  <AlertCircle className="w-4 h-4 text-accent" />
+                  Next Steps
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                  Upload your own CSV file or use the provided sample data to begin classification. Ensure your Python backend server is running!
+              </p>
+          </div>
+          <div className="p-4 rounded-xl bg-muted/10 border border-muted/30">
+              <h4 className="font-semibold text-foreground flex items-center gap-2 mb-2">
+                  <Sparkles className="w-4 h-4 text-primary" />
+                  Explore Source Data
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                  You can explore the source databases used to train the model.
+              </p>
+              <div className="flex gap-4 mt-3">
+                  <Link to="https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=cumulative" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm">
+                      Kepler Archive
+                  </Link>
+                  <Link to="https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=TOI" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline text-sm">
+                      TESS Archive
+                  </Link>
+              </div>
+          </div>
         </div>
       </div>
     );
@@ -271,42 +329,42 @@ const Discover = () => {
                             </AccordionTrigger>
                             <AccordionContent className="pt-2">
                                 <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1 pl-2">
-                                    <li><span className="font-mono text-primary">OrbitalPeriod[days]</span></li>
-                                    <li><span className="font-mono text-primary">OrbitalPeriodUpperUnc.[days]</span></li>
-                                    <li><span className="font-mono text-primary">OrbitalPeriodLowerUnc.[days]</span></li>
-                                    <li><span className="font-mono text-primary">TransitEpoch[BKJD]</span></li>
-                                    <li><span className="font-mono text-primary">TransitEpochUpperUnc.[BKJD]</span></li>
-                                    <li><span className="font-mono text-primary">TransitEpochLowerUnc.[BKJD]</span></li>
-                                    <li><span className="font-mono text-primary">ImpactParamete</span></li>
-                                    <li><span className="font-mono text-primary">ImpactParameterUpperUnc</span></li>
-                                    <li><span className="font-mono text-primary">ImpactParameterLowerUnc</span></li>
-                                    <li><span className="font-mono text-primary">TransitDuration[hrs]</span></li>
-                                    <li><span className="font-mono text-primary">TransitDurationUpperUnc.[hrs]</span></li>
-                                    <li><span className="font-mono text-primary">TransitDurationLowerUnc.[hrs]</span></li>
-                                    <li><span className="font-mono text-primary">TransitDepth[ppm]</span></li>
-                                    <li><span className="font-mono text-primary">TransitDepthUpperUnc.[ppm]</span></li>
-                                    <li><span className="font-mono text-primary">TransitDepthLowerUnc.[ppm]</span></li>
-                                    <li><span className="font-mono text-primary">PlanetaryRadius[Earthradii]</span></li>
-                                    <li><span className="font-mono text-primary">PlanetaryRadiusUpperUnc.[Earthradii]</span></li>
-                                    <li><span className="font-mono text-primary">PlanetaryRadiusLowerUnc.[Earthradii]</span></li>
-                                    <li><span className="font-mono text-primary">EquilibriumTemperature[K]</span></li>
-                                    <li><span className="font-mono text-primary">InsolationFlux[Earthflux]</span></li>
-                                    <li><span className="font-mono text-primary">InsolationFluxUpperUnc.[Earthflux]</span></li>
-                                    <li><span className="font-mono text-primary">InsolationFluxLowerUnc.[Earthflux]</span></li>
-                                    <li><span className="font-mono text-primary">TransitSignal-to-Nois</span></li>
-                                    <li><span className="font-mono text-primary">TCEPlanetNumbe</span></li>
-                                    <li><span className="font-mono text-primary">StellarEffectiveTemperature[K]</span></li>
-                                    <li><span className="font-mono text-primary">StellarEffectiveTemperatureUpperUnc.[K]</span></li>
-                                    <li><span className="font-mono text-primary">StellarEffectiveTemperatureLowerUnc.[K]</span></li>
-                                    <li><span className="font-mono text-primary">StellarSurfaceGravity[log10(cm/s**2)]</span></li>
-                                    <li><span className="font-mono text-primary">StellarSurfaceGravityUpperUnc.[log10(cm/s**2)]</span></li>
-                                    <li><span className="font-mono text-primary">StellarSurfaceGravityLowerUnc.[log10(cm/s**2)]</span></li>
-                                    <li><span className="font-mono text-primary">StellarRadius[Solarradii]</span></li>
-                                    <li><span className="font-mono text-primary">StellarRadiusUpperUnc.[Solarradii]</span></li>
-                                    <li><span className="font-mono text-primary">StellarRadiusLowerUnc.[Solarradii]</span></li>
-                                    <li><span className="font-mono text-primary">RA[decimaldegrees]</span></li>
-                                    <li><span className="font-mono text-primary">Dec[decimaldegrees]</span></li>
-                                    <li><span className="font-mono text-primary">Kepler-band[mag]</span></li>
+                                    <li><span className="font-mono text-primary">OrbitalPeriod [days]</span></li>
+                                    <li><span className="font-mono text-primary">OrbitalPeriod Upper Unc. [days]</span></li>
+                                    <li><span className="font-mono text-primary">OrbitalPeriod Lower Unc. [days]</span></li>
+                                    <li><span className="font-mono text-primary">TransitEpoch [BKJD]</span></li>
+                                    <li><span className="font-mono text-primary">TransitEpoch Upper Unc. [BKJD]</span></li>
+                                    <li><span className="font-mono text-primary">TransitEpoch Lower Unc. [BKJD]</span></li>
+                                    <li><span className="font-mono text-primary">Impact Parameter</span></li>
+                                    <li><span className="font-mono text-primary">Impact Parameter Upper Unc.</span></li>
+                                    <li><span className="font-mono text-primary">Impact Parameter Lower Unc.</span></li>
+                                    <li><span className="font-mono text-primary">Transit Duration [hrs]</span></li>
+                                    <li><span className="font-mono text-primary">Transit Duration Upper Unc. [hrs]</span></li>
+                                    <li><span className="font-mono text-primary">Transit Duration Lower Unc. [hrs]</span></li>
+                                    <li><span className="font-mono text-primary">Transit Depth [ppm]</span></li>
+                                    <li><span className="font-mono text-primary">Transit Depth Upper Unc. [ppm]</span></li>
+                                    <li><span className="font-mono text-primary">Transit Depth Lower Unc. [ppm]</span></li>
+                                    <li><span className="font-mono text-primary">Planetary Radius [Earth radii]</span></li>
+                                    <li><span className="font-mono text-primary">Planetary Radius Upper Unc. [Earth radii]</span></li>
+                                    <li><span className="font-mono text-primary">Planetary Radius Lower Unc. [Earth radii]</span></li>
+                                    <li><span className="font-mono text-primary">Equilibrium Temperature [K]</span></li>
+                                    <li><span className="font-mono text-primary">Insolation Flux [Earth flux]</span></li>
+                                    <li><span className="font-mono text-primary">Insolation Flux Upper Unc. [Earth flux]</span></li>
+                                    <li><span className="font-mono text-primary">Insolation Flux Lower Unc. [Earth flux]</span></li>
+                                    <li><span className="font-mono text-primary">Transit Signal-to-Noise</span></li>
+                                    <li><span className="font-mono text-primary">TCE Planet Number</span></li>
+                                    <li><span className="font-mono text-primary">Stellar Effective Temperature [K]</span></li>
+                                    <li><span className="font-mono text-primary">Stellar Effective Temperature Upper Unc. [K]</span></li>
+                                    <li><span className="font-mono text-primary">Stellar Effective Temperature Lower Unc. [K]</span></li>
+                                    <li><span className="font-mono text-primary">Stellar Surface Gravity [log10(cm/s**2)]</span></li>
+                                    <li><span className="font-mono text-primary">Stellar Surface Gravity Upper Unc. [log10(cm/s**2)]</span></li>
+                                    <li><span className="font-mono text-primary">Stellar Surface Gravity Lower Unc. [log10(cm/s**2)]</span></li>
+                                    <li><span className="font-mono text-primary">Stellar Radius [Solar radii]</span></li>
+                                    <li><span className="font-mono text-primary">Stellar Radius Upper Unc. [Solar radii]</span></li>
+                                    <li><span className="font-mono text-primary">Stellar Radius Lower Unc. [Solar radii]</span></li>
+                                    <li><span className="font-mono text-primary">RA [decimal degrees]</span></li>
+                                    <li><span className="font-mono text-primary">Dec [decimal degrees]</span></li>
+                                    <li><span className="font-mono text-primary">Kepler-band [mag]</span></li>
                                 </ul>
                                 <p className="mt-4 text-xs text-secondary-foreground">
                                     Note: Our backend automatically cleans special characters from these headers.
