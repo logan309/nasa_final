@@ -1,9 +1,151 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Upload, Sparkles } from 'lucide-react';
+import { Upload, Sparkles, HelpCircle, AlertCircle, CheckCircle2, ChevronDown } from 'lucide-react';
+import { toast } from "@/components/ui/sonner";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const Discover = () => {
   const [isDragging, setIsDragging] = useState(false);
+  const [file, setFile] = useState(null);
+  const [analysisResult, setAnalysisResult] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleFileChange = (e) => {
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile) {
+      setFile(uploadedFile);
+    }
+  };
+
+  const handleDragDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const uploadedFile = e.dataTransfer.files[0];
+    if (uploadedFile) {
+      setFile(uploadedFile);
+    }
+  };
+
+  const handleAnalyze = async () => {
+    if (!file) {
+      toast.error("No file selected", { description: "Please upload a CSV file to analyze." });
+      return;
+    }
+
+    setIsLoading(true);
+    setAnalysisResult(null);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // NOTE: This URL assumes your Python Flask server is running locally on port 5000
+    try {
+      const response = await fetch('http://localhost:5000/analyze_exoplanet', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}. Ensure the Python server is running and the model is loaded.`);
+      }
+
+      const result = await response.json();
+      setAnalysisResult(result);
+      toast.success("Analysis complete!", { description: `Found ${result.prediction.filter(p => p === 1).length} potential exoplanets.` });
+    } catch (error) {
+      toast.error("Analysis failed", { description: error.message });
+      console.error("Analysis error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const renderResults = () => {
+    // --- Loading State ---
+    if (isLoading) {
+      return (
+        <div className="flex flex-col items-center justify-center h-[400px] text-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-12 h-12 border-4 border-t-4 border-secondary/50 rounded-full mb-6"
+          />
+          <p className="text-muted-foreground text-lg mb-2">
+            Analyzing data...
+          </p>
+          <p className="text-sm text-muted-foreground max-w-md">
+            Please wait while our AI model processes your light curve data.
+          </p>
+        </div>
+      );
+    }
+
+    // --- Results Display ---
+    if (analysisResult) {
+      const positiveCount = analysisResult.prediction.filter(p => p === 1).length;
+      return (
+        <div className="h-full">
+          <h3 className="text-xl font-bold mb-4 text-foreground">Summary</h3>
+          <div className="bg-primary/10 p-4 rounded-xl mb-6 flex items-center justify-between">
+            <p className="text-primary font-semibold text-lg">
+              {positiveCount} potential exoplanet(s) found.
+            </p>
+            <CheckCircle2 className="w-6 h-6 text-primary" />
+          </div>
+          <h3 className="text-xl font-bold mb-4 text-foreground">Detailed Results</h3>
+          <div className="space-y-2">
+            {analysisResult.prediction.map((p, index) => (
+              <div key={index} className="p-4 rounded-lg flex items-center justify-between transition-all" style={{
+                background: p === 1 ? 'hsl(var(--secondary) / 0.1)' : 'hsl(var(--muted) / 0.1)',
+                border: p === 1 ? '1px solid hsl(var(--secondary) / 0.5)' : '1px solid transparent'
+              }}>
+                <span className="font-medium text-foreground">Candidate {index + 1}</span>
+                <div className="flex items-center gap-4">
+                  <span className="text-sm text-primary">
+                    {p === 1 ? 'EXOPLANET CANDIDATE' : 'FALSE POSITIVE'}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    Confidence: <span className="font-semibold text-foreground">{(analysisResult.probability[index] * 100).toFixed(2)}%</span>
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // --- Default Info Display ---
+    return (
+      <div className="h-full">
+        <h3 className="text-xl font-bold mb-4 text-foreground flex items-center gap-2">
+          <Sparkles className="w-6 h-6 text-secondary" />
+          AI Model Information
+        </h3>
+        <p className="text-muted-foreground mb-4 leading-relaxed">
+          This AI service is trained on data from NASA's Kepler & TESS missions, specifically the **Kepler Objects of Interest (KOI)** and **TESS Objects of Interest (TOI)** datasets.
+        </p>
+        <p className="text-sm text-primary font-semibold mb-6">
+          The model employed is **XGBoost**, chosen for its high accuracy in distinguishing true transits from false positives.
+        </p>
+        
+        <div className="p-4 rounded-xl bg-muted/10 border border-muted/30">
+            <h4 className="font-semibold text-foreground flex items-center gap-2 mb-2">
+                <AlertCircle className="w-4 h-4 text-accent" />
+                Next Steps
+            </h4>
+            <p className="text-sm text-muted-foreground">
+                Please upload your own CSV file to begin classification. 
+            </p>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen pt-24 px-4 pb-20">
@@ -22,85 +164,135 @@ const Discover = () => {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Upload Section */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div
-              className="p-8 rounded-2xl"
-              style={{
-                background: 'hsl(var(--card))',
-                border: '1px solid hsl(var(--border))',
-              }}
+          {/* Left Column: Upload & Data Format */}
+          <div className="space-y-8">
+            {/* 1. Upload Section */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h2 className="text-2xl font-bold mb-6 text-foreground flex items-center gap-2">
-                <Upload className="w-6 h-6 text-primary" />
-                Upload Data
-              </h2>
-
               <div
-                onDragEnter={() => setIsDragging(true)}
-                onDragLeave={() => setIsDragging(false)}
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  setIsDragging(false);
-                }}
-                className="relative border-2 border-dashed rounded-xl p-12 text-center transition-all cursor-pointer group"
+                className="p-8 rounded-2xl"
                 style={{
-                  borderColor: isDragging ? 'hsl(var(--primary))' : 'hsl(var(--border))',
-                  background: isDragging ? 'hsl(var(--primary) / 0.05)' : 'transparent',
+                  background: 'hsl(var(--card))',
+                  border: '1px solid hsl(var(--border))',
                 }}
               >
-                <motion.div
-                  animate={isDragging ? { scale: 1.1 } : { scale: 1 }}
-                  transition={{ duration: 0.2 }}
+                <h2 className="text-2xl font-bold mb-6 text-foreground flex items-center gap-2">
+                  <Upload className="w-6 h-6 text-primary" />
+                  Upload Data
+                </h2>
+
+                <div
+                  onDragEnter={() => setIsDragging(true)}
+                  onDragLeave={() => setIsDragging(false)}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={handleDragDrop}
+                  className="relative border-2 border-dashed rounded-xl p-12 text-center transition-all cursor-pointer group"
+                  style={{
+                    borderColor: isDragging ? 'hsl(var(--primary))' : 'hsl(var(--border))',
+                    background: isDragging ? 'hsl(var(--primary) / 0.05)' : 'transparent',
+                  }}
                 >
-                  <div
-                    className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center"
-                    style={{
-                      background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))',
-                    }}
+                  <motion.div
+                    animate={isDragging ? { scale: 1.1 } : { scale: 1 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <Upload className="w-10 h-10 text-foreground" />
-                  </div>
+                    <div
+                      className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center"
+                      style={{
+                        background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)))',
+                      }}
+                    >
+                      <Upload className="w-10 h-10 text-foreground" />
+                    </div>
 
-                  <p className="text-lg font-semibold mb-2 text-foreground">
-                    {isDragging ? 'Drop your file here' : 'Drag & drop your file here'}
-                  </p>
-                  <p className="text-muted-foreground mb-4">
-                    or click to browse
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Supports CSV files from Kepler and TESS missions
-                  </p>
-                </motion.div>
+                    <p className="text-lg font-semibold mb-2 text-foreground">
+                      {file ? file.name : (isDragging ? 'Drop your file here' : 'Drag & drop your file here')}
+                    </p>
+                    <p className="text-muted-foreground mb-4">
+                      or click to browse
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Supports CSV files from Kepler and TESS missions
+                    </p>
+                  </motion.div>
 
-                <input
-                  type="file"
-                  accept=".csv"
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                />
+                  <input
+                    type="file"
+                    accept=".csv"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    onChange={handleFileChange}
+                  />
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleAnalyze}
+                  disabled={isLoading || !file}
+                  className="w-full mt-6 px-6 py-4 rounded-xl font-semibold text-lg"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(258, 90%, 66%), hsl(200, 98%, 39%))',
+                    color: 'hsl(var(--foreground))',
+                    boxShadow: '0 0 30px hsl(258 90% 66% / 0.4)',
+                  }}
+                >
+                  {isLoading ? 'Analyzing...' : 'Analyze Data'}
+                </motion.button>
               </div>
+            </motion.div>
 
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full mt-6 px-6 py-4 rounded-xl font-semibold text-lg"
-                style={{
-                  background: 'linear-gradient(135deg, hsl(258, 90%, 66%), hsl(200, 98%, 39%))',
-                  color: 'hsl(var(--foreground))',
-                  boxShadow: '0 0 30px hsl(258 90% 66% / 0.4)',
-                }}
-              >
-                Analyze Data
-              </motion.button>
-            </div>
-          </motion.div>
+            {/* 2. Data Format Instructions */}
+            <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+            >
+                <div 
+                    className="p-6 rounded-2xl"
+                    style={{
+                        background: 'hsl(var(--card))',
+                        border: '1px solid hsl(var(--border))',
+                    }}
+                >
+                    <h3 className="text-xl font-bold mb-4 text-foreground flex items-center gap-2">
+                        <HelpCircle className="w-5 h-5 text-accent" />
+                        Required CSV Format
+                    </h3>
+                    <p className="text-muted-foreground mb-4 text-sm">
+                        For successful classification, your CSV file must contain the following features in its header:
+                    </p>
+                    <Accordion type="single" collapsible className="w-full">
+                        <AccordionItem value="item-1" className="border-b border-border/50">
+                            <AccordionTrigger className="font-semibold text-foreground/80 hover:no-underline text-sm">
+                                View Required Column Headers
+                            </AccordionTrigger>
+                            <AccordionContent className="pt-2">
+                                <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1 pl-2">
+                                    <li><span className="font-mono text-primary">StellarRadius \[Rsun]</span></li>
+                                    <li><span className="font-mono text-primary">StellarTemperature \[K]</span></li>
+                                    <li><span className="font-mono text-primary">OrbitalPeriod \[days]</span></li>
+                                    <li><span className="font-mono text-primary">TransitDepth \[ppm]</span></li>
+                                    <li><span className="font-mono text-primary">Duration \[hours]</span></li>
+                                    <li><span className="font-mono text-primary">SNR</span> (Signal-to-Noise Ratio)</li>
+                                    <li><span className="font-mono text-primary">TransitSignalDuration \[day]</span></li>
+                                    <li><span className="font-mono text-primary">TransitPeriodError \[days]</span></li>
+                                    <li><span className="font-mono text-primary">TransitDurationError \[hours]</span></li>
+                                </ul>
+                                <p className="mt-4 text-xs text-secondary-foreground">
+                                    Note: Our backend automatically cleans special characters from these headers.
+                                </p>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                </div>
+            </motion.div>
+          </div>
+          
 
-          {/* Results Section */}
+          {/* Right Column: Results/Info Section */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -113,27 +305,7 @@ const Discover = () => {
                 border: '1px solid hsl(var(--border))',
               }}
             >
-              <h2 className="text-2xl font-bold mb-6 text-foreground flex items-center gap-2">
-                <Sparkles className="w-6 h-6 text-secondary" />
-                Analysis Results
-              </h2>
-
-              <div className="flex flex-col items-center justify-center h-[400px] text-center">
-                <div
-                  className="w-24 h-24 rounded-full mb-6 flex items-center justify-center opacity-50"
-                  style={{
-                    background: 'linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--secondary) / 0.2))',
-                  }}
-                >
-                  <Sparkles className="w-12 h-12 text-muted-foreground" />
-                </div>
-                <p className="text-muted-foreground text-lg mb-2">
-                  No data analyzed yet
-                </p>
-                <p className="text-sm text-muted-foreground max-w-md">
-                  Upload a light curve data file to see AI-powered predictions about potential exoplanet transits
-                </p>
-              </div>
+              {renderResults()}
             </div>
           </motion.div>
         </div>
