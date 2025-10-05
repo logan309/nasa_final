@@ -46,7 +46,7 @@ const Discover = () => {
     
     // The conditional URL is no longer necessary as you will be deploying this final version
     // to GitHub Pages, which will use the live backend URL.
-    const API_URL = 'https://nasa-final-api.onrender.com/';
+    const API_URL = 'https://nasa-final-api.onrender.com';
 
     try {
       const response = await fetch(API_URL + '/analyze_exoplanet', {
@@ -168,10 +168,10 @@ const Discover = () => {
           AI Model Information
         </h3>
         <p className="text-muted-foreground mb-4 leading-relaxed">
-          This AI service is trained on data from NASA's Kepler & TESS missions, specifically the **Kepler Objects of Interest (KOI)** and **TESS Objects of Interest (TOI)** datasets.
+          This AI service is trained on data from NASA's Kepler & TESS missions, specifically the Kepler Objects of Interest (KOI) and TESS Objects of Interest (TOI) datasets.
         </p>
         <p className="text-sm text-primary font-semibold mb-6">
-          The model employed is **XGBoost**, chosen for its high accuracy in distinguishing true transits from false positives.
+          The model employed is XGBoost, chosen for its high accuracy in distinguishing true transits from false positives.
         </p>
         <div className="space-y-4">
           <div className="p-4 rounded-xl bg-muted/10 border border-muted/30">
