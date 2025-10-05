@@ -2,7 +2,7 @@ import { Star, Code, Users } from 'lucide-react';
 
 // Placeholder data for 6 team members
 const teamMembers = [
-  { name: "Shashank U", role: "Full Stack", initial: "SU", imgUrl: "https://placehold.co/100x100/8B5CF6/FFFFFF/png?text=SU" },
+  { name: "Shashank U", role: "FullStack", initial: "SU", imgUrl: "https://placehold.co/100x100/8B5CF6/FFFFFF/png?text=SU" },
   { name: "Sachin R", role: "AI/ML Lead", initial: "SR", imgUrl: "https://placehold.co/100x100/06B6D4/FFFFFF/png?text=SR" },
   { name: "Darshan K R", role: "Project Manager", initial: "DK", imgUrl: "https://placehold.co/100x100/EC4899/FFFFFF/png?text=DK" },
   { name: "Rudresh", role: "Frontend Lead", initial: "RR", imgUrl: "https://placehold.co/100x100/3B82F6/FFFFFF/png?text=RR" },
