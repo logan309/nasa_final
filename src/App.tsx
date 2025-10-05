@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { StarfieldBackground } from "./components/StarfieldBackground";
 import { Navbar } from "./components/Navbar";
 import Home from "./pages/Home";
@@ -14,7 +14,8 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <BrowserRouter>
+  // HashRouter is used for GitHub Pages deployment to handle routing correctly
+  <HashRouter>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
@@ -34,7 +35,7 @@ const App = () => (
         </div>
       </TooltipProvider>
     </QueryClientProvider>
-  </BrowserRouter>
+  </HashRouter>
 );
 
 export default App;
