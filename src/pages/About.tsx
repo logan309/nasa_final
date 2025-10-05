@@ -2,12 +2,12 @@ import { Star, Code, Users } from 'lucide-react';
 
 // Placeholder data for 6 team members
 const teamMembers = [
-  { name: "Astronaut Alex", role: "AI/ML Lead", initial: "AA", imgUrl: "https://placehold.co/100x100/8B5CF6/FFFFFF/png?text=AA" },
-  { name: "Engineer Erin", role: "Frontend Developer", initial: "EE", imgUrl: "https://placehold.co/100x100/06B6D4/FFFFFF/png?text=EE" },
-  { name: "Data Diana", role: "Data Scientist", initial: "DD", imgUrl: "https://placehold.co/100x100/EC4899/FFFFFF/png?text=DD" },
-  { name: "Commander Chris", role: "Project Manager", initial: "CC", imgUrl: "https://placehold.co/100x100/3B82F6/FFFFFF/png?text=CC" },
-  { name: "Pilot Peter", role: "UX/UI Designer", initial: "PP", imgUrl: "https://placehold.co/100x100/F59E0B/FFFFFF/png?text=PP" },
-  { name: "Navigator Nova", role: "Backend Architect", initial: "NN", imgUrl: "https://placehold.co/100x100/10B981/FFFFFF/png?text=NN" },
+  { name: "Shashank U", role: "Full Stack", initial: "SU", imgUrl: "https://placehold.co/100x100/8B5CF6/FFFFFF/png?text=SU" },
+  { name: "Sachin R", role: "AI/ML Lead", initial: "SR", imgUrl: "https://placehold.co/100x100/06B6D4/FFFFFF/png?text=SR" },
+  { name: "Darshan K R", role: "Project Manager", initial: "DK", imgUrl: "https://placehold.co/100x100/EC4899/FFFFFF/png?text=DK" },
+  { name: "Rudresh", role: "Frontend Lead", initial: "RR", imgUrl: "https://placehold.co/100x100/3B82F6/FFFFFF/png?text=RR" },
+  { name: "Gagan Gowda", role: "Backend Architect", initial: "GG", imgUrl: "https://placehold.co/100x100/F59E0B/FFFFFF/png?text=GG" },
+  { name: "Shiva M", role: "UI/UX Designer", initial: "SM", imgUrl: "https://placehold.co/100x100/10B981/FFFFFF/png?text=SM" },
 ];
 
 const About = () => {
@@ -17,7 +17,7 @@ const About = () => {
         
         {/* --- Header --- */}
         <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-          About EXOVERSE
+          About PLANETEXO
         </h1>
         <p className="text-muted-foreground text-lg mb-12">
           Learn about our mission to explore distant worlds, the technology powering our platform, and the team behind the project.
@@ -36,10 +36,10 @@ const About = () => {
             Our Mission & Impact
           </h2>
           <p className="text-muted-foreground text-base leading-relaxed mb-4">
-            EXOVERSE was built during the Lovable Hackathon to democratize **exoplanet discovery**. We use cutting-edge machine learning, specifically a highly accurate **XGBoost model**, trained on real astronomical data from NASA's Kepler and TESS missions. 
+            PLANETEXO was built during the Lovable Hackathon to democratize exoplanet discovery. We use cutting-edge machine learning, specifically a highly accurate XGBoost model, trained on real astronomical data from NASA's Kepler and TESS missions. 
           </p>
           <p className="text-muted-foreground text-base leading-relaxed">
-            Our goal is to make the process of identifying potential planetary **transit candidates** more accessible to citizen scientists and accelerate the pace of space discovery, contributing to humanity's search for worlds beyond our solar system.
+            Our goal is to make the process of identifying potential planetary transit candidates more accessible to citizen scientists and accelerate the pace of space discovery, contributing to humanity's search for worlds beyond our solar system.
           </p>
         </div>
 

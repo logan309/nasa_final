@@ -14,7 +14,7 @@ const exoplanets = [
       orbitalPeriod: '4.2 days',
       temperature: '~1,000°C',
     },
-    image: 'https://placehold.co/600x400/FF6B35/FFF?text=51+Pegasi+b',
+    image: 'pic/pi.jpeg',
     gradient: 'from-orange-500 to-red-500',
   },
   {
@@ -29,7 +29,7 @@ const exoplanets = [
       orbitalPeriod: '11.2 days',
       temperature: '~234 K (-39°C)',
     },
-    image: 'https://placehold.co/600x400/3B82F6/FFF?text=Proxima+Centauri+b',
+    image: 'pic/pro.jpeg',
     gradient: 'from-blue-500 to-cyan-500',
   },
   {
@@ -44,7 +44,7 @@ const exoplanets = [
       orbitalPeriod: '6.1 days',
       temperature: '~246 K (-27°C)',
     },
-    image: 'https://placehold.co/600x400/10B981/FFF?text=TRAPPIST-1e',
+    image: 'pic/tra.jpeg',
     gradient: 'from-green-500 to-emerald-500',
   },
   {
@@ -59,7 +59,7 @@ const exoplanets = [
       orbitalPeriod: '2.2 days',
       temperature: '~1,200°C',
     },
-    image: 'https://placehold.co/600x400/2563EB/FFF?text=HD+189733+b',
+    image: 'pic/hd.jpeg',
     gradient: 'from-blue-600 to-indigo-600',
   },
   {
@@ -74,7 +74,7 @@ const exoplanets = [
       orbitalPeriod: '385 days',
       temperature: '~265 K (-8°C)',
     },
-    image: 'https://placehold.co/600x400/8B5CF6/FFF?text=Kepler-452b',
+    image: 'pic/kep.jpeg',
     gradient: 'from-purple-500 to-pink-500',
   },
 ];

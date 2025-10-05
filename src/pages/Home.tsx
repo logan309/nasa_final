@@ -40,7 +40,7 @@ const Home = () => {
               <div className="relative rounded-2xl overflow-hidden" style={{ border: '2px solid hsl(var(--primary) / 0.3)' }}>
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20" />
                 <img 
-                  src="https://science.nasa.gov/wp-content/uploads/2023/09/types-of-exoplanets-jpeg.webp"
+                  src="pic/exoplanets.jpeg"
                   alt="Types of Exoplanets" 
                   className="w-full h-auto relative z-10"
                 />

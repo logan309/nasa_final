@@ -128,10 +128,10 @@ const Discover = () => {
           AI Model Information
         </h3>
         <p className="text-muted-foreground mb-4 leading-relaxed">
-          This AI service is trained on data from NASA's Kepler & TESS missions, specifically the **Kepler Objects of Interest (KOI)** and **TESS Objects of Interest (TOI)** datasets.
+          This AI service is trained on data from NASA's Kepler & TESS missions, specifically the Kepler Objects of Interest (KOI) and TESS Objects of Interest (TOI) datasets.
         </p>
         <p className="text-sm text-primary font-semibold mb-6">
-          The model employed is **XGBoost**, chosen for its high accuracy in distinguishing true transits from false positives.
+          The model employed is XGBoost, chosen for its high accuracy in distinguishing true transits from false positives.
         </p>
         
         <div className="p-4 rounded-xl bg-muted/10 border border-muted/30">
@@ -271,15 +271,42 @@ const Discover = () => {
                             </AccordionTrigger>
                             <AccordionContent className="pt-2">
                                 <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1 pl-2">
-                                    <li><span className="font-mono text-primary">StellarRadius \[Rsun]</span></li>
-                                    <li><span className="font-mono text-primary">StellarTemperature \[K]</span></li>
-                                    <li><span className="font-mono text-primary">OrbitalPeriod \[days]</span></li>
-                                    <li><span className="font-mono text-primary">TransitDepth \[ppm]</span></li>
-                                    <li><span className="font-mono text-primary">Duration \[hours]</span></li>
-                                    <li><span className="font-mono text-primary">SNR</span> (Signal-to-Noise Ratio)</li>
-                                    <li><span className="font-mono text-primary">TransitSignalDuration \[day]</span></li>
-                                    <li><span className="font-mono text-primary">TransitPeriodError \[days]</span></li>
-                                    <li><span className="font-mono text-primary">TransitDurationError \[hours]</span></li>
+                                    <li><span className="font-mono text-primary">OrbitalPeriod[days]</span></li>
+                                    <li><span className="font-mono text-primary">OrbitalPeriodUpperUnc.[days]</span></li>
+                                    <li><span className="font-mono text-primary">OrbitalPeriodLowerUnc.[days]</span></li>
+                                    <li><span className="font-mono text-primary">TransitEpoch[BKJD]</span></li>
+                                    <li><span className="font-mono text-primary">TransitEpochUpperUnc.[BKJD]</span></li>
+                                    <li><span className="font-mono text-primary">TransitEpochLowerUnc.[BKJD]</span></li>
+                                    <li><span className="font-mono text-primary">ImpactParamete</span></li>
+                                    <li><span className="font-mono text-primary">ImpactParameterUpperUnc</span></li>
+                                    <li><span className="font-mono text-primary">ImpactParameterLowerUnc</span></li>
+                                    <li><span className="font-mono text-primary">TransitDuration[hrs]</span></li>
+                                    <li><span className="font-mono text-primary">TransitDurationUpperUnc.[hrs]</span></li>
+                                    <li><span className="font-mono text-primary">TransitDurationLowerUnc.[hrs]</span></li>
+                                    <li><span className="font-mono text-primary">TransitDepth[ppm]</span></li>
+                                    <li><span className="font-mono text-primary">TransitDepthUpperUnc.[ppm]</span></li>
+                                    <li><span className="font-mono text-primary">TransitDepthLowerUnc.[ppm]</span></li>
+                                    <li><span className="font-mono text-primary">PlanetaryRadius[Earthradii]</span></li>
+                                    <li><span className="font-mono text-primary">PlanetaryRadiusUpperUnc.[Earthradii]</span></li>
+                                    <li><span className="font-mono text-primary">PlanetaryRadiusLowerUnc.[Earthradii]</span></li>
+                                    <li><span className="font-mono text-primary">EquilibriumTemperature[K]</span></li>
+                                    <li><span className="font-mono text-primary">InsolationFlux[Earthflux]</span></li>
+                                    <li><span className="font-mono text-primary">InsolationFluxUpperUnc.[Earthflux]</span></li>
+                                    <li><span className="font-mono text-primary">InsolationFluxLowerUnc.[Earthflux]</span></li>
+                                    <li><span className="font-mono text-primary">TransitSignal-to-Nois</span></li>
+                                    <li><span className="font-mono text-primary">TCEPlanetNumbe</span></li>
+                                    <li><span className="font-mono text-primary">StellarEffectiveTemperature[K]</span></li>
+                                    <li><span className="font-mono text-primary">StellarEffectiveTemperatureUpperUnc.[K]</span></li>
+                                    <li><span className="font-mono text-primary">StellarEffectiveTemperatureLowerUnc.[K]</span></li>
+                                    <li><span className="font-mono text-primary">StellarSurfaceGravity[log10(cm/s**2)]</span></li>
+                                    <li><span className="font-mono text-primary">StellarSurfaceGravityUpperUnc.[log10(cm/s**2)]</span></li>
+                                    <li><span className="font-mono text-primary">StellarSurfaceGravityLowerUnc.[log10(cm/s**2)]</span></li>
+                                    <li><span className="font-mono text-primary">StellarRadius[Solarradii]</span></li>
+                                    <li><span className="font-mono text-primary">StellarRadiusUpperUnc.[Solarradii]</span></li>
+                                    <li><span className="font-mono text-primary">StellarRadiusLowerUnc.[Solarradii]</span></li>
+                                    <li><span className="font-mono text-primary">RA[decimaldegrees]</span></li>
+                                    <li><span className="font-mono text-primary">Dec[decimaldegrees]</span></li>
+                                    <li><span className="font-mono text-primary">Kepler-band[mag]</span></li>
                                 </ul>
                                 <p className="mt-4 text-xs text-secondary-foreground">
                                     Note: Our backend automatically cleans special characters from these headers.

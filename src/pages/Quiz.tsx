@@ -105,14 +105,14 @@ const Quiz = () => {
     <Card className="max-w-xl mx-auto p-6" style={{ border: '2px solid hsl(var(--primary))' }}>
       <CardHeader>
         <Rocket className="w-10 h-10 text-primary mb-3 mx-auto" />
-        <CardTitle className="text-3xl text-center">Exoplanet Explorer Quiz</CardTitle>
+        <CardTitle className="text-3xl text-center">PLANETEXO Explorer Quiz</CardTitle>
         <CardDescription className="text-center mt-2 text-lg">
           Test your knowledge of extrasolar planets and the missions that discover them.
         </CardDescription>
       </CardHeader>
       <CardContent className="text-center space-y-4">
         <p className="text-muted-foreground">
-          You will face **{QUIZ_LENGTH} random questions** selected from a pool of **{allQuestions.length}+ facts**. Each time you start, you get a new set of questions!
+          You will face {QUIZ_LENGTH} random questions selected from a pool of {allQuestions.length}+ facts. Each time you start, you get a new set of questions!
         </p>
         <div className="pt-2 text-sm text-foreground space-y-1">
           <h4 className="font-semibold flex items-center justify-center gap-2 text-primary"><BookOpen className="w-4 h-4" /> Topics Covered:</h4>

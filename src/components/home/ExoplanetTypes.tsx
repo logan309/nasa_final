@@ -6,28 +6,28 @@ const types = [
     description: 'Massive planets composed primarily of hydrogen and helium, similar to Jupiter and Saturn. Many orbit extremely close to their stars as "Hot Jupiters".',
     characteristics: ['0.3-13 Jupiter masses', 'H₂ & He atmospheres', 'Possible rocky cores'],
     color: 'from-orange-500 to-yellow-600',
-    image: 'https://placehold.co/400x300/FF6B35/FFF?text=Gas+Giant',
+    image: 'pic/gas_gaint.jpeg',
   },
   {
     name: 'Super-Earths',
     description: 'Planets larger than Earth but smaller than Neptune. The most common type of exoplanet discovered, with diverse compositions.',
     characteristics: ['1.25-2 Earth radii', 'Rocky or water worlds', 'Potential for life'],
     color: 'from-blue-500 to-cyan-500',
-    image: 'https://placehold.co/400x300/3B82F6/FFF?text=Super-Earth',
+    image: 'pic/super.jpeg',
   },
   {
     name: 'Neptune-like',
     description: 'Ice giants with thick atmospheres of hydrogen and helium surrounding a mantle of water, methane, and ammonia ices.',
     characteristics: ['2-6 Earth radii', 'Ice giant composition', 'Thick atmospheres'],
     color: 'from-indigo-500 to-blue-600',
-    image: 'https://placehold.co/400x300/4F46E5/FFF?text=Neptune-like',
+    image: 'pic/nep.jpeg',
   },
   {
     name: 'Terrestrial',
     description: 'Rocky planets similar to Earth, Mars, Venus, and Mercury. Primarily composed of silicate rocks and metals.',
     characteristics: ['<1.25 Earth radii', 'Rocky composition', 'Solid surfaces'],
     color: 'from-red-500 to-orange-600',
-    image: 'https://placehold.co/400x300/EF4444/FFF?text=Terrestrial',
+    image: 'pic/ter.jpeg',
   },
 ];
 

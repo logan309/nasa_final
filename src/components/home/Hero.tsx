@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 export const Hero = () => {
   const [typedText, setTypedText] = useState('');
-  const fullText = 'A WORLD AWAY';
+  const fullText = 'A WORLD BEHOND ';
 
   useEffect(() => {
     let currentIndex = 0;

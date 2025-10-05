@@ -44,26 +44,20 @@ export const Footer = () => {
             <h4 className="font-semibold mb-4 text-foreground">Connect With Us</h4>
             <div className="flex gap-4 mb-4">
               <a 
-                href="#" 
+                href="mailto:shashankgowda1236628@gmail.com" 
                 className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary hover:text-primary transition-all"
                 aria-label="Email"
               >
                 <Mail className="w-5 h-5" />
               </a>
               <a 
-                href="#" 
+                href="https://github.com/logan309" 
                 className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary hover:text-primary transition-all"
                 aria-label="GitHub"
               >
                 <Github className="w-5 h-5" />
               </a>
-              <a 
-                href="#" 
-                className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center hover:border-primary hover:text-primary transition-all"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
+              
             </div>
             <p className="text-muted-foreground text-xs">
               contact@abccoding.space
